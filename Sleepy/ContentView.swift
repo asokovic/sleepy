@@ -66,6 +66,11 @@ struct ContentView: View {
                                 TextField("0", value: $hours, format: .number)
                                     .textFieldStyle(.roundedBorder)
                                     .frame(width: 40)
+                                    .onChange(of: hours) {
+                                        if hours < 0 {
+                                            hours = 0
+                                        }
+                                    }
                                 Text("h")
                                     .foregroundColor(.secondary)
                             }
@@ -74,6 +79,11 @@ struct ContentView: View {
                                 TextField("0", value: $minutes, format: .number)
                                     .textFieldStyle(.roundedBorder)
                                     .frame(width: 50)
+                                    .onChange(of: minutes) {
+                                        if minutes < 0 {
+                                            minutes = 0
+                                        }
+                                    }
                                 Text("min")
                                     .foregroundColor(.secondary)
                             }
@@ -93,6 +103,7 @@ struct ContentView: View {
                         DatePicker(
                             "",
                             selection: $scheduledDate,
+                            in: Date()...,
                             displayedComponents: [.date, .hourAndMinute]
                         )
                         .datePickerStyle(.compact)
