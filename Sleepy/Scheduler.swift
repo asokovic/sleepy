@@ -19,36 +19,42 @@ struct Scheduler {
             case atTime = "At"
         }
 
-    static func buildCommand(_ action: Action, _ scheduleType: ScheduleType, _ hours: Int, _ minutes: Int, _ date: Date) -> String? {
+    static func buildCommand(_ action: String, _ scheduleType: String, _ hours: Int, _ minutes: Int, _ date: Date) -> String? {
         
         guard hours >= 0, minutes >= 0 else {
             return nil
         }
-        if scheduleType == .atTime, date < Date() {
+        if scheduleType == "At", date < Date() {
             return nil
         }
         
-        if scheduleType == .inTime {
+        if scheduleType == "In" {
             let total = max((hours * 60) + minutes, 1)
             switch action {
-            case .shutdown: 
+            case "Shutdown":
                 return "sudo shutdown -h +\(total)"
-            case .restart:  
+            case "Restart":
                 return "sudo shutdown -r +\(total)"
-            case .sleep:    
+            case "Sleep":
                 return "sudo shutdown -s +\(total)"
+            default:
+                return nil
             }
-        } else {
+        } else if scheduleType == "At" {
             let f = DateFormatter(); f.dateFormat = "yyMMddHHmm"
             let str = f.string(from: date)
             switch action {
-            case .shutdown: 
+            case "Shutdown":
                 return "sudo shutdown -h \(str)"
-            case .restart:  
+            case "Restart":
                 return "sudo shutdown -r \(str)"
-            case .sleep:    
+            case "Sleep":
                 return "sudo shutdown -s \(str)"
+            default:
+                return nil
             }
+            
         }
+        return nil;
     }
 }

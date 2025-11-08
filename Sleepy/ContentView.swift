@@ -118,7 +118,16 @@ struct ContentView: View {
 
             // SCHEDULE BUTTON (left-aligned)
             Button("Schedule") {
-                // TODO: scheduling logic
+                if let command = Scheduler.buildCommand(selectedAction, scheduleType, hours, minutes, scheduledDate) {
+                    if let pid = Shell.runShell(command) {
+                        print("Started process with PID: \(pid)")
+                        // TODO: Save this PID + command to "Upcoming"
+                    } else {
+                        print("Failed to start process.")
+                    }
+                } else {
+                    print("Invalid input — could not build command.")
+                }
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.small)
